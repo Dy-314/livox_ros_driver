@@ -395,7 +395,7 @@ uint32_t Lddc::PublishCustomPointcloud(LidarDataQueue *queue,
   livox_msg.timebase = 0;
   livox_msg.point_num = 0;
   livox_msg.lidar_id = handle;
-
+  
   uint8_t point_buf[2048];
   uint8_t data_source = lds_->lidars_[handle].data_src;
   uint32_t line_num = GetLaserLineNumber(lidar->info.type);
@@ -408,7 +408,9 @@ uint32_t Lddc::PublishCustomPointcloud(LidarDataQueue *queue,
     QueuePrePop(queue, &storage_packet);
     LivoxEthPacket *raw_packet =
         reinterpret_cast<LivoxEthPacket *>(storage_packet.raw_data);
-    timestamp = GetStoragePacketTimestamp(&storage_packet, data_source);
+    timestamp = GetStoragePacketTimestamp(&storage_packet, data_source);    // TODO
+    livox_msg.rsvd=GetStoragePacketTimestamp(&storage_packet,data_source); 
+
     int64_t packet_gap = timestamp - last_timestamp;
     if ((packet_gap > lidar->packet_interval_max) &&
         lidar->data_is_pubulished) {
@@ -424,7 +426,7 @@ uint32_t Lddc::PublishCustomPointcloud(LidarDataQueue *queue,
     if (!published_packet) {
       livox_msg.timebase = timestamp;
       packet_offset_time = 0;
-      /** convert to ros time stamp */
+      /** convert to ros time stamp */            //Todo
       livox_msg.header.stamp = ros::Time(timestamp / 1000000000.0);
     } else {
       packet_offset_time = (uint32_t)(timestamp - livox_msg.timebase);

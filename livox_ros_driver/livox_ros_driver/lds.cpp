@@ -96,6 +96,20 @@ uint64_t RawLdsStampToNs(LdsStamp &timestamp, uint8_t timestamp_type) {
   }
 }
 
+uint8_t GetStoragePacketTimeSyncStatus(StoragePacket *packet, uint8_t data_src)
+{
+  LivoxEthPacket *raw_packet =
+      reinterpret_cast<LivoxEthPacket *>(packet->raw_data);
+  uint8_t PtpTimeSyncStatus=0;
+  if(data_src==kSourceRawLidar){    //&,I  位运算符
+    PtpTimeSyncStatus = (raw_packet->err_code>>13) & 0xF;
+  }
+
+  return PtpTimeSyncStatus;
+}
+
+
+
 uint64_t GetStoragePacketTimestamp(StoragePacket *packet, uint8_t data_src) {
   LivoxEthPacket *raw_packet =
       reinterpret_cast<LivoxEthPacket *>(packet->raw_data);
