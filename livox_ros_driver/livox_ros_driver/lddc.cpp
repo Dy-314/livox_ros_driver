@@ -409,7 +409,7 @@ uint32_t Lddc::PublishCustomPointcloud(LidarDataQueue *queue,
     LivoxEthPacket *raw_packet =
         reinterpret_cast<LivoxEthPacket *>(storage_packet.raw_data);
     timestamp = GetStoragePacketTimestamp(&storage_packet, data_source);    // TODO
-    livox_msg.rsvd=GetStoragePacketTimestamp(&storage_packet,data_source); 
+    livox_msg.rsvd[0] = GetStoragePacketTimeSyncStatus(&storage_packet,data_source); 
 
     int64_t packet_gap = timestamp - last_timestamp;
     if ((packet_gap > lidar->packet_interval_max) &&

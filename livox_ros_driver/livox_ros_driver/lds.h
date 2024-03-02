@@ -267,6 +267,7 @@ bool IsFilePathValid(const char *path_str);
 time_t replace_timegm(struct tm *tm);
 uint64_t RawLdsStampToNs(LdsStamp &timestamp, uint8_t timestamp_type);
 uint64_t GetStoragePacketTimestamp(StoragePacket *packet, uint8_t data_src);
+uint8_t GetStoragePacketTimeSyncStatus(StoragePacket *packet, uint8_t data_src);
 uint32_t CalculatePacketQueueSize(uint32_t interval_ms, uint8_t product_type,
                                   uint8_t data_type);
 void ParseCommandlineInputBdCode(const char *cammandline_str,
